@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# CPU clock MHz
+cpu_mhz=`lscpu | grep "CPU MHz" | cut -d ':' -f 2 | xargs -I{} awk "BEGIN {printf \"%4.f Mhz\", {}}"`
+# CPU temp
+cpu_temp=`head -n 1 /sys/class/thermal/thermal_zone0/temp | xargs -I{} awk "BEGIN {printf \"%2.f °C\", {}/1000}"`
+
+# Total RAM
+ram_tot=`free -h | grep Mem: | xargs | cut -d " " -f 2`
+# Used RAM
+ram_used=`free -h | grep Mem: | xargs | cut -d " " -f 3`
+
+# Storage
+file_sys=`df -h | grep /dev/sdb2 | xargs | cut -d " " -f 1`
+#total_storage=`df -h | grep /dev/sdb2 | xargs | cut -d " " -f 2`
+#used_storage=`df -h | grep /dev/sdb2 | xargs | cut -d " " -f 3`
+avail_storage=`df -h | grep /dev/sdb2 | xargs | cut -d " " -f 4`
+
+# Uptime
+#upt=`uptime -p`
+
+# Display
+SPACE="        "
+echo -e "CPU temp: $cpu_temp $SPACE$SPACE CPU: $cpu_mhz $SPACE\n$file_sys: $avail_storage free  $SPACE  RAM: $ram_used / $ram_tot $SPACE"
+
+#echo -e "CPU: $cpu_mhz $SPACE CPU temp: $cpu_temp $SPACE RAM: $ram_used / $ram_tot $SPACE $file_sys: $avail_storage free $SPACE"
+
+# Display with uptime info
+#echo -e "CPU: $cpu_mhz $SPACE CPU temp: $cpu_temp $SPACE RAM: $ram_used / $ram_tot $SPACE $file_sys: $avail_storage free $SPACE $upt $SPACE"

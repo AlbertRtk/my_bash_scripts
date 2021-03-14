@@ -1,0 +1,14 @@
+#!/bin/bash
+# ---------------------------------------------------------------------- #
+# Script checks and prints Krohnkite KWin script status (enable/disable) #
+# ---------------------------------------------------------------------- #
+
+# check if script is active
+krohnkite_status=`cat ~/.config/kwinrc | grep krohnkiteEnabled= | rev | cut -d"=" -f1 | rev`
+
+# output status
+if $krohnkite_status; then
+    echo "|T|"
+else
+    echo "|F|"
+fi
